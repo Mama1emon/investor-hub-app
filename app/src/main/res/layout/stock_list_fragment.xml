@@ -4,77 +4,84 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
     tools:context=".presentation.view.MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/stock_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:paddingTop="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+        android:paddingStart="@dimen/padding_medium"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingEnd="@dimen/padding_medium"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="?attr/actionBarTheme">
+        android:theme="?attr/actionBarTheme"
+        app:elevation="@dimen/elevation_small">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap">
+            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
             <EditText
                 android:id="@+id/search_edit_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="4dp"
-                android:paddingStart="16dp"
-                android:paddingTop="12dp"
-                android:paddingEnd="20dp"
-                android:paddingBottom="12dp"
+                android:layout_marginStart="@dimen/margin_medium"
+                android:layout_marginTop="@dimen/margin_large_small"
+                android:layout_marginEnd="@dimen/margin_medium"
+                android:layout_marginBottom="@dimen/margin_xxsmall"
                 android:background="@drawable/search_line_background"
                 android:drawableStart="@drawable/ic_search_24"
-                android:drawablePadding="8dp"
-                android:hint="Find company or ticker"
+                android:drawablePadding="@dimen/padding_small"
+                android:hint="@string/find_company_or_ticker"
+                android:lineSpacingExtra="@dimen/lineSpacingExtra_large"
+                android:maxLines="1"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingTop="@dimen/padding_xmedium"
+                android:paddingEnd="@dimen/padding_large_small"
+                android:paddingBottom="@dimen/padding_xmedium"
+                android:textColor="@color/colorTitlePrimary"
                 android:textColorHint="@color/colorTitlePrimary"
-                android:textColor="@color/colorTitlePrimary" />
+                android:textSize="@dimen/textSize_headline3" />
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="12dp">
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:layout_marginBottom="@dimen/margin_xmedium">
 
             <TextView
                 android:id="@+id/header_title_stocks"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:lineSpacingExtra="4dp"
-                android:text="Stocks"
+                android:lineSpacingExtra="@dimen/lineSpacingExtra_small"
+                android:text="@string/stocks"
                 android:textColor="@color/colorTitlePrimary"
-                android:textSize="28sp" />
+                android:textSize="@dimen/textSize_headline1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/header_title_favourites"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                app:layout_constraintStart_toEndOf="@id/header_title_stocks"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:lineSpacingExtra="6dp"
-                android:text="Favourites"
+                android:layout_marginStart="@dimen/margin_large_small"
+                android:lineSpacingExtra="@dimen/lineSpacingExtra_medium"
+                android:text="@string/favourites"
                 android:textColor="@color/colorTitleSecondary"
-                android:textSize="18sp"
-                android:translationY="-1.03sp" />
+                android:textSize="@dimen/textSize_headline2"
+                android:translationY="-1.03sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/header_title_stocks" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.appbar.AppBarLayout>
 

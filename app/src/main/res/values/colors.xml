@@ -6,4 +6,6 @@
 
     <color name="colorTitlePrimary">#1A1A1A</color>
     <color name="colorTitleSecondary">#BABABA</color>
+    <color name="colorDayDelta">#24B25D</color>
+    <color name="colorStockListItem">#F0F4F7</color>
 </resources>

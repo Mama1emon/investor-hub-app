@@ -1,8 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="16dp">
+    app:cardCornerRadius="@dimen/cornerRadius_xxlarge"
+    app:cardElevation="@dimen/no_elevation">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/margin_small"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginEnd="@dimen/margin_xmedium"
+        android:layout_marginBottom="@dimen/margin_small">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/stock_icon"
+            android:layout_width="@dimen/icon_size_xxlarge"
+            android:layout_height="@dimen/icon_size_xxlarge"
+            app:cardCornerRadius="@dimen/cornerRadius_xlarge"
+            app:cardElevation="@dimen/no_elevation"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@tools:sample/avatars" />
+
+        <LinearLayout
+            android:id="@+id/stock_tiker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xmedium"
+            android:layout_marginTop="@dimen/margin_xsmall"
+            app:layout_constraintStart_toEndOf="@id/stock_icon"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/stock_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_xsmall"
+                android:lineSpacingExtra="@dimen/lineSpacingExtra_medium"
+                android:textColor="@color/colorTitlePrimary"
+                android:textSize="@dimen/textSize_headline2"
+                tools:text="YNDX" />
+
+            <CheckBox
+                android:layout_width="@dimen/check_box_size_medium"
+                android:layout_height="@dimen/check_box_size_medium"
+                android:button="@drawable/star_check_box" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xmedium"
+            android:layout_marginBottom="@dimen/margin_xsmall"
+            android:lineSpacingExtra="@dimen/lineSpacingExtra_small"
+            android:textColor="@color/colorTitlePrimary"
+            android:textSize="@dimen/textSize_body"
+            android:translationY="-0.69sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/stock_icon"
+            app:layout_constraintTop_toBottomOf="@id/stock_tiker" />
+
+        <TextView
+            android:id="@+id/current_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_xsmall"
+            android:layout_marginEnd="@dimen/margin_xsmall"
+            android:lineSpacingExtra="@dimen/lineSpacingExtra_medium"
+            android:textColor="@color/colorTitlePrimary"
+            android:textSize="@dimen/textSize_headline3"
+            android:translationY="-1.03sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/day_delta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_xsmall"
+            android:lineSpacingExtra="@dimen/lineSpacingExtra_small"
+            android:textColor="@color/colorDayDelta"
+            android:textSize="@dimen/textSize_body"
+            android:translationY="-0.69sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/current_price" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
