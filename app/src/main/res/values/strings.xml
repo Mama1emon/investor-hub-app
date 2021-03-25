@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">InvestHub</string>
     <string name="find_company_or_ticker">Find company or ticker</string>
+
+    <!-- Primary Menu -->
     <string name="stocks">Stocks</string>
     <string name="favourites">Favourites</string>
 </resources>

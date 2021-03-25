@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.mama1emon.impl.R
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.presentation.adapter.StockListAdapter
-import com.mama1emon.impl.util.Font
-import com.mama1emon.impl.util.getTypefaceByFont
 
 /**
  * Фрагмент со списком акций
@@ -21,11 +17,7 @@ import com.mama1emon.impl.util.getTypefaceByFont
  */
 class StockListFragment : Fragment() {
 
-    private lateinit var searchTextView: TextView
-    private lateinit var stocksTitleView: TextView
-    private lateinit var favouritesTitleView: TextView
     private lateinit var stockRecyclerView: RecyclerView
-
     private lateinit var stockListAdapter: StockListAdapter
 
     override fun onCreateView(
@@ -38,7 +30,6 @@ class StockListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         findViews(view)
-        applyViewTypeface()
 
         stockRecyclerView.addItemDecoration(
             EmptySpaceItemDecoration(
@@ -117,18 +108,7 @@ class StockListFragment : Fragment() {
     }
 
     private fun findViews(view: View) = with(view) {
-        searchTextView = findViewById(R.id.search_edit_view)
-        stocksTitleView = findViewById(R.id.header_title_stocks)
-        favouritesTitleView = findViewById(R.id.header_title_favourites)
         stockRecyclerView = findViewById(R.id.stock_recycler_view)
-    }
-
-    private fun applyViewTypeface() {
-        val activity = activity as AppCompatActivity
-
-        searchTextView.typeface = getTypefaceByFont(activity, Font.Montserrat600)
-        stocksTitleView.typeface = getTypefaceByFont(activity, Font.Montserrat700)
-        favouritesTitleView.typeface = getTypefaceByFont(activity, Font.Montserrat700)
     }
 
     companion object {

@@ -40,4 +40,6 @@
     <dimen name="icon_size_xxlarge">52dp</dimen>
 
     <dimen name="check_box_size_medium">16dp</dimen>
+    <dimen name="tab_layout_indicator_height">0dp</dimen>
+    <dimen name="tab_layout_height">32dp</dimen>
 </resources>

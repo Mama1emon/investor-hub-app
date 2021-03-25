@@ -1,88 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/stock_recycler_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context=".presentation.view.MainActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/stock_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingStart="@dimen/padding_medium"
-        android:paddingTop="@dimen/padding_small"
-        android:paddingEnd="@dimen/padding_medium"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-    <com.google.android.material.appbar.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="?attr/actionBarTheme"
-        app:elevation="@dimen/elevation_small">
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
-
-            <EditText
-                android:id="@+id/search_edit_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_large_small"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_xxsmall"
-                android:background="@drawable/search_line_background"
-                android:drawableStart="@drawable/ic_search_24"
-                android:drawablePadding="@dimen/padding_small"
-                android:hint="@string/find_company_or_ticker"
-                android:lineSpacingExtra="@dimen/lineSpacingExtra_large"
-                android:maxLines="1"
-                android:paddingStart="@dimen/padding_medium"
-                android:paddingTop="@dimen/padding_xmedium"
-                android:paddingEnd="@dimen/padding_large_small"
-                android:paddingBottom="@dimen/padding_xmedium"
-                android:textColor="@color/colorTitlePrimary"
-                android:textColorHint="@color/colorTitlePrimary"
-                android:textSize="@dimen/textSize_headline3" />
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginEnd="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_xmedium">
-
-            <TextView
-                android:id="@+id/header_title_stocks"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:lineSpacingExtra="@dimen/lineSpacingExtra_small"
-                android:text="@string/stocks"
-                android:textColor="@color/colorTitlePrimary"
-                android:textSize="@dimen/textSize_headline1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/header_title_favourites"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_large_small"
-                android:lineSpacingExtra="@dimen/lineSpacingExtra_medium"
-                android:text="@string/favourites"
-                android:textColor="@color/colorTitleSecondary"
-                android:textSize="@dimen/textSize_headline2"
-                android:translationY="-1.03sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@id/header_title_stocks" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.appbar.AppBarLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/padding_medium"
+    android:paddingTop="@dimen/padding_small"
+    android:paddingEnd="@dimen/padding_medium"
+    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
