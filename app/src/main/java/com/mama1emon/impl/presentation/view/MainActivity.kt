@@ -13,7 +13,7 @@ import com.google.android.material.tabs.TabLayout
 import com.mama1emon.impl.R
 import com.mama1emon.impl.presentation.adapter.PrimaryMenuPagerAdapter
 import com.mama1emon.impl.util.Font
-import com.mama1emon.impl.util.getTypefaceByFont
+import com.mama1emon.impl.util.setTypefaceByFont
 import com.mama1emon.impl.util.setWeight
 import com.mama1emon.impl.util.setWidth
 
@@ -35,16 +35,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_activity)
 
         findViews()
-        applyViewTypeface()
+        setupHeader()
         initFragmentPagerMap()
 
         setupViewPager()
         setupTabLayout()
 
         viewPager.addOnPageChangeListener(object : OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-
-            }
+            override fun onPageScrollStateChanged(state: Int) {}
 
             override fun onPageScrolled(
                 position: Int,
@@ -54,7 +52,13 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
-
+                for (i in 0 until tabLayout.tabCount) {
+                    (tabLayout.getTabAt(i)?.customView as TextView).apply {
+                        setTextAppearance(R.style.TextAppearance_Headline2)
+                        setTypefaceByFont(Font.Montserrat700)
+                    }
+                }
+                setStyleCurrentFragmentTitle()
             }
         })
     }
@@ -69,11 +73,21 @@ class MainActivity : AppCompatActivity() {
         fragmentPagerMap = mutableMapOf<String, Fragment>().apply {
             put(resources.getString(R.string.stocks), StockListFragment())
             put(resources.getString(R.string.favourites), StockListFragment())
+            put("Chart", StockListFragment())
+            put("Summary", StockListFragment())
+            put("News", StockListFragment())
         }
     }
 
-    private fun applyViewTypeface() {
-        searchTextView.typeface = getTypefaceByFont(this, Font.Montserrat600)
+    private fun setupHeader() {
+        searchTextView.setTypefaceByFont(Font.Montserrat600)
+        searchTextView.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                searchTextView.hint = ""
+            } else {
+                searchTextView.hint = resources.getString(R.string.find_company_or_ticker)
+            }
+        }
     }
 
     private fun setupViewPager() {
@@ -84,25 +98,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupTabLayout() {
-        tabLayout.setupWithViewPager(viewPager)
-        var counter = 0
+    private fun setupTabLayout() = with(tabLayout) {
+        setupWithViewPager(viewPager)
 
+        var counter = 0
         fragmentPagerMap.keys.forEach { fragmentTitle ->
-            val view = LayoutInflater.from(this).inflate(R.layout.custom_tab_view, tabLayout, false)
+            val view = LayoutInflater.from(this@MainActivity)
+                .inflate(R.layout.custom_tab_view, this, false)
 
             // Изменить вес и ширину tab
-            (tabLayout.getChildAt(0) as ViewGroup).getChildAt(counter).apply {
+            (getChildAt(0) as ViewGroup).getChildAt(counter).apply {
                 setWeight(0f)
                 setWidth(LinearLayout.LayoutParams.WRAP_CONTENT)
             }
 
-            tabLayout.getTabAt(counter)?.customView = (view as TextView).apply {
+            getTabAt(counter)?.customView = (view as TextView).apply {
                 text = fragmentTitle
-                typeface = getTypefaceByFont(this@MainActivity, Font.Montserrat700)
+                setTypefaceByFont(Font.Montserrat700)
             }
 
             counter++
+        }
+
+        setStyleCurrentFragmentTitle()
+    }
+
+    private fun setStyleCurrentFragmentTitle() = with(tabLayout) {
+        (getTabAt(selectedTabPosition)?.customView as TextView).apply {
+            setTextAppearance(R.style.TextAppearance_Headline1)
+            setTypefaceByFont(Font.Montserrat700)
         }
     }
 }

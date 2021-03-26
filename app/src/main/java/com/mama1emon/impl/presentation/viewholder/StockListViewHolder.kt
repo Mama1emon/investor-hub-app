@@ -2,13 +2,12 @@ package com.mama1emon.impl.presentation.viewholder
 
 import android.view.View
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.mama1emon.impl.R
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.util.Font
-import com.mama1emon.impl.util.getTypefaceByFont
+import com.mama1emon.impl.util.setTypefaceByFont
 
 /**
  * Вью холдер с описанием акции
@@ -55,11 +54,10 @@ class StockListViewHolder(
      * Изменяет шрифт вью
      */
     private fun setTypeface() {
-        val activity = view.context as AppCompatActivity
-        stockNameTextView.typeface = getTypefaceByFont(activity, Font.Montserrat700)
-        companyNameTextView.typeface = getTypefaceByFont(activity, Font.Montserrat600)
-        currentPriceTextView.typeface = getTypefaceByFont(activity, Font.Montserrat700)
-        dayDeltaTextView.typeface = getTypefaceByFont(activity, Font.Montserrat600)
+        stockNameTextView.setTypefaceByFont(Font.Montserrat700)
+        companyNameTextView.setTypefaceByFont(Font.Montserrat600)
+        currentPriceTextView.setTypefaceByFont(Font.Montserrat700)
+        dayDeltaTextView.setTypefaceByFont(Font.Montserrat600)
     }
 
     /**

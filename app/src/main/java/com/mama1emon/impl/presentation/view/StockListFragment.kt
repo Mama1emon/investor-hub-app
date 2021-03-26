@@ -110,8 +110,4 @@ class StockListFragment : Fragment() {
     private fun findViews(view: View) = with(view) {
         stockRecyclerView = findViewById(R.id.stock_recycler_view)
     }
-
-    companion object {
-        fun getInstance() = StockListFragment()
-    }
 }

@@ -2,8 +2,6 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/custom_tab"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:lineSpacingExtra="@dimen/lineSpacingExtra_medium"
-    android:textColor="@color/colorTitleSecondary"
-    android:textSize="@dimen/textSize_headline2"
-    android:translationY="-1.03sp" />
+    android:layout_height="@dimen/tab_height"
+    android:textAppearance="@style/TextAppearance.Headline2"
+    android:gravity="start|bottom" />

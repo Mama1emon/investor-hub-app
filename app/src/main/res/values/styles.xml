@@ -6,4 +6,17 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
+
+    <style name="TextAppearance.Headline1" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">@dimen/textSize_headline1</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra_small</item>
+        <item name="android:textColor">@color/colorTitlePrimary</item>
+    </style>
+
+    <style name="TextAppearance.Headline2" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:textSize">@dimen/textSize_headline2</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra_medium</item>
+        <item name="android:textColor">@color/colorTitleSecondary</item>
+        <item name="android:translationY">-1.03sp</item>
+    </style>
 </resources>

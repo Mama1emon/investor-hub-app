@@ -53,9 +53,9 @@
             android:layout_height="@dimen/tab_layout_height"
             app:tabIndicatorHeight="@dimen/tab_layout_indicator_height"
             app:tabPaddingStart="@dimen/padding_large_small"
-            app:tabPaddingEnd="@dimen/padding_large_small"
-            app:tabMode="fixed"
+            app:tabMode="scrollable"
             android:layout_marginTop="@dimen/margin_medium"
-            android:layout_marginBottom="@dimen/margin_xmedium"></com.google.android.material.tabs.TabLayout>
+            android:layout_marginBottom="@dimen/margin_xmedium"
+            android:paddingEnd="@dimen/padding_medium" />
     </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
