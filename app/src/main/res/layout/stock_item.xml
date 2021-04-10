@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_root_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="@dimen/cornerRadius_xxlarge"
@@ -16,14 +17,20 @@
         android:layout_marginBottom="@dimen/margin_small">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/stock_icon"
+            android:id="@+id/stock_icon_card_view"
             android:layout_width="@dimen/icon_size_xxlarge"
             android:layout_height="@dimen/icon_size_xxlarge"
             app:cardCornerRadius="@dimen/cornerRadius_xlarge"
             app:cardElevation="@dimen/no_elevation"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@tools:sample/avatars" />
+            tools:background="@tools:sample/avatars">
+
+            <ImageView
+                android:id="@+id/stock_icon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.cardview.widget.CardView>
 
         <LinearLayout
             android:id="@+id/stock_tiker"
@@ -31,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_xmedium"
             android:layout_marginTop="@dimen/margin_xsmall"
-            app:layout_constraintStart_toEndOf="@id/stock_icon"
+            app:layout_constraintStart_toEndOf="@id/stock_icon_card_view"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -45,6 +52,7 @@
                 tools:text="YNDX" />
 
             <CheckBox
+                android:id="@+id/favourite_stock_check_box"
                 android:layout_width="@dimen/check_box_size_medium"
                 android:layout_height="@dimen/check_box_size_medium"
                 android:button="@drawable/star_check_box" />
@@ -61,7 +69,7 @@
             android:textSize="@dimen/textSize_body"
             android:translationY="-0.69sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/stock_icon"
+            app:layout_constraintStart_toEndOf="@id/stock_icon_card_view"
             app:layout_constraintTop_toBottomOf="@id/stock_tiker" />
 
         <TextView
@@ -83,7 +91,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_xsmall"
             android:lineSpacingExtra="@dimen/lineSpacingExtra_small"
-            android:textColor="@color/colorDayDelta"
             android:textSize="@dimen/textSize_body"
             android:translationY="-0.69sp"
             app:layout_constraintEnd_toEndOf="parent"

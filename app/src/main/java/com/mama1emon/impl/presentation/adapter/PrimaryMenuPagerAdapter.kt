@@ -7,6 +7,8 @@ import androidx.fragment.app.FragmentPagerAdapter
 /**
  * Адаптер для горизонательного скролла между фрагментами
  *
+ * @param fragmentManager фрагмент менеджер
+ *
  * @author Andrey Khokhlov on 25.03.21
  */
 
@@ -26,10 +28,5 @@ class PrimaryMenuPagerAdapter(
     fun addFragment(fragmentTitle: String, fragment: Fragment) {
         fragmentTitleList.add(fragmentTitle)
         fragmentList.add(fragment)
-        primaryMenuSize++
-    }
-
-    companion object {
-        var primaryMenuSize = 0
     }
 }

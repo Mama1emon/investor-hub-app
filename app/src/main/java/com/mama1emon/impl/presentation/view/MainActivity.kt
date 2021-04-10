@@ -10,13 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.tabs.TabLayout
-import com.mama1emon.impl.R
+import com.mama1emon.R
 import com.mama1emon.impl.presentation.adapter.PrimaryMenuPagerAdapter
 import com.mama1emon.impl.util.Font
 import com.mama1emon.impl.util.setTypefaceByFont
 import com.mama1emon.impl.util.setWeight
 import com.mama1emon.impl.util.setWidth
-
 
 /**
  * Главный activity
@@ -69,16 +68,6 @@ class MainActivity : AppCompatActivity() {
         searchTextView = findViewById(R.id.search_edit_view)
     }
 
-    private fun initFragmentPagerMap() {
-        fragmentPagerMap = mutableMapOf<String, Fragment>().apply {
-            put(resources.getString(R.string.stocks), StockListFragment())
-            put(resources.getString(R.string.favourites), StockListFragment())
-            put("Chart", StockListFragment())
-            put("Summary", StockListFragment())
-            put("News", StockListFragment())
-        }
-    }
-
     private fun setupHeader() {
         searchTextView.setTypefaceByFont(Font.Montserrat600)
         searchTextView.setOnFocusChangeListener { _, hasFocus ->
@@ -87,6 +76,12 @@ class MainActivity : AppCompatActivity() {
             } else {
                 searchTextView.hint = resources.getString(R.string.find_company_or_ticker)
             }
+        }
+    }
+
+    private fun initFragmentPagerMap() {
+        fragmentPagerMap = mutableMapOf<String, Fragment>().apply {
+            put(resources.getString(R.string.stocks), StockListFragment())
         }
     }
 

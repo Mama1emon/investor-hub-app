@@ -1,10 +1,12 @@
 package com.mama1emon.impl.util
 
 import androidx.annotation.DrawableRes
-import com.mama1emon.impl.R
+import com.mama1emon.R
 
 /**
  * Менеджер для работы с иконками
+ *
+ * @property defaultIconId иконка по-умолчанию
  *
  * @author Andrey Khokhlov on 27.03.21
  */
@@ -13,6 +15,11 @@ class IconManager(
 ) {
     private val iconMap: Map<String, Int> = initIcons()
 
+    /**
+     * Получить иконку по урлу
+     *
+     * @param iconUrl урл иконки
+     */
     fun getIcon(iconUrl: String) = iconMap[iconUrl] ?: defaultIconId
 
     companion object {
