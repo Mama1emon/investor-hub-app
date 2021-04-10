@@ -20,4 +20,16 @@
         <item name="android:textColor">@color/colorTitleSecondary</item>
         <item name="android:translationY">-1.03sp</item>
     </style>
+
+    <style name="Base.Widget.AppCompat.EditText.SearchLine" parent="Base.Widget.AppCompat.EditText">
+        <item name="android:lineSpacingExtra">@dimen/lineSpacingExtra_large</item>
+        <item name="android:inputType">text</item>
+        <item name="android:paddingStart">@dimen/padding_medium</item>
+        <item name="android:paddingTop">@dimen/padding_xmedium</item>
+        <item name="android:paddingEnd">@dimen/padding_large_small</item>
+        <item name="android:paddingBottom">@dimen/padding_xmedium</item>
+        <item name="android:textColor">@color/colorTitlePrimary</item>
+        <item name="android:textColorHint">@color/colorTitlePrimary</item>
+        <item name="android:textSize">@dimen/textSize_headline3</item>
+    </style>
 </resources>

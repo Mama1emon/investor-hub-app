@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorPrimary"
-    tools:context=".presentation.view.MainActivity">
+    android:background="@color/colorPrimary">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
@@ -36,15 +34,8 @@
                 android:drawableStart="@drawable/ic_search_24"
                 android:drawablePadding="@dimen/padding_small"
                 android:hint="@string/find_company_or_ticker"
-                android:lineSpacingExtra="@dimen/lineSpacingExtra_large"
-                android:maxLines="1"
-                android:paddingStart="@dimen/padding_medium"
-                android:paddingTop="@dimen/padding_xmedium"
-                android:paddingEnd="@dimen/padding_large_small"
-                android:paddingBottom="@dimen/padding_xmedium"
-                android:textColor="@color/colorTitlePrimary"
-                android:textColorHint="@color/colorTitlePrimary"
-                android:textSize="@dimen/textSize_headline3" />
+                style="@style/Base.Widget.AppCompat.EditText.SearchLine"/>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
         <com.google.android.material.tabs.TabLayout
@@ -57,5 +48,7 @@
             android:layout_marginTop="@dimen/margin_medium"
             android:layout_marginBottom="@dimen/margin_xmedium"
             android:paddingEnd="@dimen/padding_medium" />
+
     </com.google.android.material.appbar.AppBarLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
