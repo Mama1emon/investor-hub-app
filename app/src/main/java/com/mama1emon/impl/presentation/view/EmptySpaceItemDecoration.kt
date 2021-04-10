@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * Пустое пространство между элементами ресайклера
  *
+ * @param verticalSpace вертикальное пространство
+ * @param horizontalSpace горизонтальное пространство
+ *
  * @author Andrey Khokhlov on 24.03.21
  */
 class EmptySpaceItemDecoration(

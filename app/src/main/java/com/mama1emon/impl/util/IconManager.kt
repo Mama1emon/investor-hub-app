@@ -25,5 +25,4 @@ class IconManager(
             ("MSFT" to R.drawable.ic_msft)
         )
     }
-
 }
