@@ -4,13 +4,14 @@ import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.mama1emon.api.data.AppDatabase
 import com.mama1emon.api.domain.interactor.Interactor
+import com.mama1emon.api.presentation.viewmodel.BaseViewModel
 import com.mama1emon.impl.model.data.entity.FavouriteStock
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.model.domain.StockQuote
 import com.mama1emon.impl.util.MultipleLiveEvent
+import com.mama1emon.impl.util.addTo
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -25,7 +26,7 @@ import io.reactivex.schedulers.Schedulers
 class StockFragmentContentViewModel(
     private val interactor: Interactor,
     private val database: AppDatabase
-) : ViewModel() {
+) : BaseViewModel() {
 
     var cachedStockList: MutableSet<Stock>? = null
     var cachedFavouriteStockSet = mutableSetOf<FavouriteStock>()
@@ -52,6 +53,7 @@ class StockFragmentContentViewModel(
             }, {
                 Log.e(it.toString(), "getStockList() finished with an error")
             })
+            .addTo(rxCompositeDisposable)
     }
 
     /**
@@ -73,6 +75,7 @@ class StockFragmentContentViewModel(
             }, {
                 Log.e(it.toString(), "getStockQuote() finished with an error")
             })
+            .addTo(rxCompositeDisposable)
     }
 
     /**
@@ -88,6 +91,7 @@ class StockFragmentContentViewModel(
             }, {
                 Log.e(it.toString(), "getFavouriteStock() finished with an error")
             })
+            .addTo(rxCompositeDisposable)
     }
 
     /**
@@ -99,6 +103,7 @@ class StockFragmentContentViewModel(
         interactor.saveFavouriteStocks(stock)
             .subscribeOn(Schedulers.io())
             .subscribe()
+            .addTo(rxCompositeDisposable)
     }
 
     /**
@@ -110,5 +115,6 @@ class StockFragmentContentViewModel(
         interactor.deleteFavouriteStock(ticker)
             .subscribeOn(Schedulers.io())
             .subscribe()
+            .addTo(rxCompositeDisposable)
     }
 }

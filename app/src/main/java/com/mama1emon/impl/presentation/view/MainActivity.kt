@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
-    private lateinit var searchTextView: TextView
+    private lateinit var searchEditView: TextView
     private lateinit var fragmentPagerMap: MutableMap<String, Fragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
         setupViewPager()
         setupTabLayout()
 
+        searchEditView
         viewPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
 
@@ -65,16 +66,16 @@ class MainActivity : AppCompatActivity() {
     private fun findViews() = with(this) {
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
-        searchTextView = findViewById(R.id.search_edit_view)
+        searchEditView = findViewById(R.id.search_edit_view)
     }
 
     private fun setupHeader() {
-        searchTextView.setTypefaceByFont(Font.Montserrat600)
-        searchTextView.setOnFocusChangeListener { _, hasFocus ->
+        searchEditView.setTypefaceByFont(Font.Montserrat600)
+        searchEditView.setOnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                searchTextView.hint = ""
+                searchEditView.hint = ""
             } else {
-                searchTextView.hint = resources.getString(R.string.find_company_or_ticker)
+                searchEditView.hint = resources.getString(R.string.find_company_or_ticker)
             }
         }
     }
