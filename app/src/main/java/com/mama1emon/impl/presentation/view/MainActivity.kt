@@ -6,16 +6,17 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import com.google.android.material.tabs.TabLayout
 import com.mama1emon.R
+import com.mama1emon.api.App
+import com.mama1emon.api.presentation.view.ViewPagerFragment
 import com.mama1emon.impl.presentation.adapter.PrimaryMenuPagerAdapter
-import com.mama1emon.impl.util.Font
-import com.mama1emon.impl.util.setTypefaceByFont
-import com.mama1emon.impl.util.setWeight
-import com.mama1emon.impl.util.setWidth
+import com.mama1emon.impl.presentation.viewmodel.StockFragmentContentViewModel
+import com.mama1emon.impl.presentation.viewmodel.ViewModelProviderFactory
+import com.mama1emon.impl.util.*
 
 /**
  * Главный activity
@@ -23,15 +24,26 @@ import com.mama1emon.impl.util.setWidth
  * @author Andrey Khokhlov
  */
 class MainActivity : AppCompatActivity() {
+    private val interactor = App.instance?.getInteractor()
+    private val database = App.instance?.getDatabase()
+    private lateinit var viewModel: StockFragmentContentViewModel
 
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
     private lateinit var searchEditView: TextView
-    private lateinit var fragmentPagerMap: MutableMap<String, Fragment>
+
+    private lateinit var viewPagerAdapter: PrimaryMenuPagerAdapter
+    private lateinit var fragmentPagerMap: MutableMap<String, ViewPagerFragment>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
+
+        if (interactor != null && database != null) {
+            viewModel = ViewModelProvider(viewModelStore, ViewModelProviderFactory {
+                StockFragmentContentViewModel(interactor, database)
+            }).get(StockFragmentContentViewModel::class.java)
+        }
 
         findViews()
         setupHeader()
@@ -40,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         setupViewPager()
         setupTabLayout()
 
-        searchEditView
         viewPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
 
@@ -52,6 +63,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onPageSelected(position: Int) {
+                (viewPagerAdapter.getItem(position) as ViewPagerFragment).onStartFragment()
+
                 for (i in 0 until tabLayout.tabCount) {
                     (tabLayout.getTabAt(i)?.customView as TextView).apply {
                         setTextAppearance(R.style.TextAppearance_Headline2)
@@ -60,6 +73,12 @@ class MainActivity : AppCompatActivity() {
                 }
                 setStyleCurrentFragmentTitle()
             }
+        })
+
+        viewModel.cachedStockSet ?: viewModel.loadStockSetContent()
+
+        viewModel.stockSetContent.observe(this, {
+            viewModel.loadFavouriteStockSet()
         })
     }
 
@@ -81,17 +100,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initFragmentPagerMap() {
-        fragmentPagerMap = mutableMapOf<String, Fragment>().apply {
+        fragmentPagerMap = mutableMapOf<String, ViewPagerFragment>().apply {
             put(resources.getString(R.string.stocks), StockListFragment())
+            put(resources.getString(R.string.favourites), FavouriteStockListFragment())
         }
     }
 
     private fun setupViewPager() {
-        viewPager.adapter = PrimaryMenuPagerAdapter(supportFragmentManager).apply {
+        viewPagerAdapter = PrimaryMenuPagerAdapter(supportFragmentManager).apply {
             fragmentPagerMap.entries.forEach { pair ->
                 addFragment(pair.key, pair.value)
             }
         }
+        viewPager.adapter = viewPagerAdapter
     }
 
     private fun setupTabLayout() = with(tabLayout) {

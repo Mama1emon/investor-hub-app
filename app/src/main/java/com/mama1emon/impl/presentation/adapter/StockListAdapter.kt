@@ -19,7 +19,7 @@ class StockListAdapter(
     private val favouriteStockCheckBoxListener: (View, String) -> Unit
 ) : RecyclerView.Adapter<StockListViewHolder>() {
 
-    private var stockList = listOf<Stock>()
+    private var stockList = mutableListOf<Stock>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockListViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.stock_item, parent, false)
@@ -41,26 +41,48 @@ class StockListAdapter(
     /**
      * Сеттит список акций в ресайклер
      *
-     * @param set множество акций
+     * @param stockSet множество акций
      */
-    fun setData(set: Set<Stock>) {
-        stockList = set.toMutableList()
+    fun setData(stockSet: Set<Stock>) {
+        stockList = stockSet.toMutableList()
         notifyDataSetChanged()
     }
 
+    /**
+     * Сеттит котировку акции определенному итему
+     *
+     * @param quote котировка акции
+     */
     fun setStockQuote(quote: StockQuote) {
-        val oldStock = stockList.find { it.ticker == quote.ticker }
-        oldStock?.let {
-            it.quote = quote
-            notifyItemChanged(stockList.indexOf(oldStock))
+        stockList.find { it.ticker == quote.ticker }?.let { foundStock ->
+            foundStock.quote = quote
+            notifyItemChanged(stockList.indexOf(foundStock))
         }
     }
 
-    fun setFavouriteStock(stock: FavouriteStock) {
-        val oldStock = stockList.find { it.ticker == stock.ticker }
-        oldStock?.let {
-            it.isFavourite = true
-            notifyItemChanged(stockList.indexOf(oldStock))
+    /**
+     * Сеттит любимые акции
+     *
+     * @param stockSet любимая акция
+     */
+    fun setFavouriteStock(stockSet: Set<FavouriteStock>) {
+        val favouriteTickerSet = stockSet.map { it.ticker }
+
+        stockList.forEach { stock ->
+            stock.isFavourite = stock.ticker in favouriteTickerSet
+        }
+        notifyDataSetChanged()
+    }
+
+    /**
+     * Удалить любимую акцию
+     *
+     * @param stock любимая акция
+     */
+    fun removeFavoriteStock(stock: FavouriteStock) {
+        stockList.find { it.ticker == stock.ticker }?.let { foundStock ->
+            stockList.removeAt(stockList.indexOf(foundStock))
+            notifyDataSetChanged()
         }
     }
 }

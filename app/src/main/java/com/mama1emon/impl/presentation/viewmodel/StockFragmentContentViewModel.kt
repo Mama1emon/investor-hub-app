@@ -1,6 +1,5 @@
 package com.mama1emon.impl.presentation.viewmodel
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -28,28 +27,28 @@ class StockFragmentContentViewModel(
     private val database: AppDatabase
 ) : BaseViewModel() {
 
-    var cachedStockList: MutableSet<Stock>? = null
+    var cachedStockSet: Set<Stock>? = null
     var cachedFavouriteStockSet = mutableSetOf<FavouriteStock>()
+    var isChangeFavouriteStocks = false
 
-    private val stockListContentMutableLiveData = MutableLiveData<Set<Stock>>()
-    val stockListContent: LiveData<Set<Stock>> = stockListContentMutableLiveData
+    private val stockSetContentMutableLiveData = MutableLiveData<Set<Stock>>()
+    val stockSetContent: LiveData<Set<Stock>> = stockSetContentMutableLiveData
 
     private val stockQuoteContentMutableLiveData = MultipleLiveEvent<StockQuote>()
     val stockQuoteContent: LiveData<StockQuote> = stockQuoteContentMutableLiveData
 
-    private val favouriteStockListMutableLiveData = MutableLiveData<Set<FavouriteStock>>()
-    val favouriteStockList: LiveData<Set<FavouriteStock>> = favouriteStockListMutableLiveData
+    private val favouriteStockSetMutableLiveData = MutableLiveData<Set<FavouriteStock>>()
+    val favouriteStockSet: LiveData<Set<FavouriteStock>> = favouriteStockSetMutableLiveData
 
     /**
      * Загрузить набор акций
      */
-    @SuppressLint("CheckResult")
     fun loadStockSetContent() {
         interactor.getStockSetContent()
             .subscribeOn(Schedulers.io())
-            .subscribe({
-                stockListContentMutableLiveData.postValue(it)
-                cachedStockList = it.toMutableSet()
+            .subscribe({ stockSet ->
+                stockSetContentMutableLiveData.postValue(stockSet)
+                cachedStockSet = stockSet
             }, {
                 Log.e(it.toString(), "getStockList() finished with an error")
             })
@@ -61,16 +60,11 @@ class StockFragmentContentViewModel(
      *
      * @param ticker акции
      */
-    @SuppressLint("CheckResult")
     fun loadStockQuoteContent(ticker: String) {
         interactor.getStockQuote(ticker)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ quote ->
-                cachedStockList?.let { stockList ->
-                    val oldStock = stockList.first { it.ticker == ticker }
-                    oldStock.quote = quote
-                }
                 stockQuoteContentMutableLiveData.value = quote
             }, {
                 Log.e(it.toString(), "getStockQuote() finished with an error")
@@ -81,12 +75,11 @@ class StockFragmentContentViewModel(
     /**
      * Загрузить список любимых акций
      */
-    @SuppressLint("CheckResult")
     fun loadFavouriteStockSet() {
         interactor.getFavouriteStockList()
             .subscribeOn(Schedulers.io())
             .subscribe({ favouriteStockList ->
-                favouriteStockListMutableLiveData.postValue(favouriteStockList.toSet())
+                favouriteStockSetMutableLiveData.postValue(favouriteStockList.toSet())
                 cachedFavouriteStockSet = favouriteStockList.toMutableSet()
             }, {
                 Log.e(it.toString(), "getFavouriteStock() finished with an error")
@@ -100,6 +93,7 @@ class StockFragmentContentViewModel(
      * @param stock любимая акция
      */
     fun saveFavouriteStock(stock: FavouriteStock) {
+        isChangeFavouriteStocks = true
         interactor.saveFavouriteStocks(stock)
             .subscribeOn(Schedulers.io())
             .subscribe()
@@ -112,6 +106,7 @@ class StockFragmentContentViewModel(
      * @param ticker акции
      */
     fun deleteFavouriteStock(ticker: String) {
+        isChangeFavouriteStocks = true
         interactor.deleteFavouriteStock(ticker)
             .subscribeOn(Schedulers.io())
             .subscribe()

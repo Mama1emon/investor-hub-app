@@ -16,11 +16,11 @@ import com.mama1emon.impl.presentation.adapter.StockListAdapter
 import com.mama1emon.impl.presentation.viewmodel.StockFragmentContentViewModel
 
 /**
- * Фрагмент со списком акций
+ * Фрагмент со списком любимых акций
  *
  * @author Andrey Khokhlov on 23.03.21
  */
-class StockListFragment : ViewPagerFragment() {
+class FavouriteStockListFragment : ViewPagerFragment() {
     private val viewModel: StockFragmentContentViewModel by activityViewModels()
 
     private lateinit var stockRecyclerView: RecyclerView
@@ -41,20 +41,33 @@ class StockListFragment : ViewPagerFragment() {
         observeData()
     }
 
+    private fun findViews(view: View) = with(view) {
+        stockRecyclerView = findViewById(R.id.stock_recycler_view)
+    }
+
     override fun onStartFragment() {
-        // если изменились любимые акции
+        // если изменился список любимых акций
         if (viewModel.isChangeFavouriteStocks) {
             // кешируем с задержкой, чтобы не перегружать UI
             Handler(Looper.getMainLooper()).postDelayed({
-                stockListAdapter.setFavouriteStock(viewModel.cachedFavouriteStockSet)
-            }, 300)
+                val favouriteTickerSet = viewModel.cachedFavouriteStockSet.map { it.ticker }
+                viewModel.cachedStockSet?.let { stockSet ->
+                    val resultStockSet = stockSet.filter { stock ->
+                        stock.ticker in favouriteTickerSet
+                    }.toSet()
+
+                    stockListAdapter.setData(resultStockSet)
+
+                    resultStockSet.forEach { stock ->
+                        viewModel.loadStockQuoteContent(stock.ticker)
+                    }
+
+                    stockListAdapter.setFavouriteStock(viewModel.cachedFavouriteStockSet)
+                }
+            }, CACHING_DELAY)
 
             viewModel.isChangeFavouriteStocks = false
         }
-    }
-
-    private fun findViews(view: View) = with(view) {
-        stockRecyclerView = findViewById(R.id.stock_recycler_view)
     }
 
     private fun setupRecyclerView() {
@@ -67,6 +80,7 @@ class StockListFragment : ViewPagerFragment() {
                 viewModel.cachedFavouriteStockSet.add(favouriteStock)
             } else {
                 viewModel.deleteFavouriteStock(selectedTicker)
+                stockListAdapter.removeFavoriteStock(FavouriteStock(ticker = selectedTicker))
                 viewModel.cachedFavouriteStockSet.removeIf { cachedStock ->
                     cachedStock.ticker == selectedTicker
                 }
@@ -83,20 +97,24 @@ class StockListFragment : ViewPagerFragment() {
 
     private fun observeData() {
         viewModel.stockSetContent.observe(viewLifecycleOwner, { stockSet ->
-            stockListAdapter.setData(stockSet)
+            viewModel.favouriteStockSet.observe(viewLifecycleOwner, { favouriteStocks ->
+                val favouriteTickerSet = favouriteStocks.map { it.ticker }
+                val resultStockSet = stockSet.filter { stock ->
+                    stock.ticker in favouriteTickerSet
+                }.toSet()
 
-            //для каждого тикета запрашиваем инфо о котировках
-            stockSet.forEach { stock ->
-                viewModel.loadStockQuoteContent(stock.ticker)
-            }
-        })
+                stockListAdapter.setData(resultStockSet)
 
-        viewModel.stockQuoteContent.observe(viewLifecycleOwner, { quote ->
-            stockListAdapter.setStockQuote(quote)
-        })
+                resultStockSet.forEach { stock ->
+                    viewModel.loadStockQuoteContent(stock.ticker)
+                }
 
-        viewModel.favouriteStockSet.observe(viewLifecycleOwner, { favouriteStocks ->
-            stockListAdapter.setFavouriteStock(favouriteStocks)
+                stockListAdapter.setFavouriteStock(favouriteStocks)
+            })
         })
+    }
+
+    companion object {
+        const val CACHING_DELAY = 200L
     }
 }
