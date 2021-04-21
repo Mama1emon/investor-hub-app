@@ -25,7 +25,7 @@ import com.mama1emon.impl.util.*
  */
 class MainActivity : AppCompatActivity() {
     private val interactor = App.instance?.getInteractor()
-    private val database = App.instance?.getDatabase()
+    private val sharedPreferences = App.instance?.getSharedPreferences()
     private lateinit var viewModel: StockFragmentContentViewModel
 
     private lateinit var viewPager: ViewPager
@@ -39,9 +39,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.main_activity)
 
-        if (interactor != null && database != null) {
+        if (interactor != null && sharedPreferences != null) {
             viewModel = ViewModelProvider(viewModelStore, ViewModelProviderFactory {
-                StockFragmentContentViewModel(interactor, database)
+                StockFragmentContentViewModel(interactor, sharedPreferences)
             }).get(StockFragmentContentViewModel::class.java)
         }
 
@@ -77,8 +77,12 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.cachedStockSet ?: viewModel.loadStockSetContent()
 
-        viewModel.stockSetContent.observe(this, {
+        viewModel.stockSetContent.observe(this, { stockSet ->
             viewModel.loadFavouriteStockSet()
+
+            stockSet.forEach { stock ->
+                viewModel.loadStockQuoteContent(stock.ticker)
+            }
         })
     }
 

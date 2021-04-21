@@ -54,7 +54,7 @@ class StockListViewHolder(
      *
      * @param stock данные об акции
      */
-    fun bind(stock: Stock, favouriteStockCheckBoxClickListener: (View, String) -> Unit) {
+    fun bind(stock: Stock, favouriteStockCheckBoxClickListener: (View, Stock) -> Unit) {
         setTypeface()
         stockIcon.setImageDrawable(
             ResourcesCompat.getDrawable(
@@ -93,7 +93,7 @@ class StockListViewHolder(
         }
 
         favouriteStockCheckBox.setOnClickListener {
-            favouriteStockCheckBoxClickListener.invoke(it, stock.ticker)
+            favouriteStockCheckBoxClickListener.invoke(it, stock)
         }
     }
 

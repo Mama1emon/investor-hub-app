@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.mama1emon.R
 import com.mama1emon.api.presentation.view.ViewPagerFragment
-import com.mama1emon.impl.model.data.entity.FavouriteStock
 import com.mama1emon.impl.presentation.adapter.StockListAdapter
 import com.mama1emon.impl.presentation.viewmodel.StockFragmentContentViewModel
 
@@ -46,8 +45,8 @@ class StockListFragment : ViewPagerFragment() {
         if (viewModel.isChangeFavouriteStocks) {
             // кешируем с задержкой, чтобы не перегружать UI
             Handler(Looper.getMainLooper()).postDelayed({
-                stockListAdapter.setFavouriteStock(viewModel.cachedFavouriteStockSet)
-            }, 300)
+                stockListAdapter.setFavouriteStockSet(viewModel.cachedFavouriteStockSet)
+            }, CACHING_DELAY)
 
             viewModel.isChangeFavouriteStocks = false
         }
@@ -58,18 +57,14 @@ class StockListFragment : ViewPagerFragment() {
     }
 
     private fun setupRecyclerView() {
-        stockListAdapter = StockListAdapter { checkBox, selectedTicker ->
+        stockListAdapter = StockListAdapter { checkBox, selectedStock ->
             val favouriteStockCheckBox = checkBox as CheckBox
-            val favouriteStock = FavouriteStock(ticker = selectedTicker)
 
             if (favouriteStockCheckBox.isChecked) {
-                viewModel.saveFavouriteStock(favouriteStock)
-                viewModel.cachedFavouriteStockSet.add(favouriteStock)
+                viewModel.saveFavouriteStock(selectedStock)
             } else {
-                viewModel.deleteFavouriteStock(selectedTicker)
-                viewModel.cachedFavouriteStockSet.removeIf { cachedStock ->
-                    cachedStock.ticker == selectedTicker
-                }
+                viewModel.deleteFavouriteStock(selectedStock.ticker)
+                stockListAdapter.removeFavoriteStock(selectedStock.ticker)
             }
         }
 
@@ -84,11 +79,6 @@ class StockListFragment : ViewPagerFragment() {
     private fun observeData() {
         viewModel.stockSetContent.observe(viewLifecycleOwner, { stockSet ->
             stockListAdapter.setData(stockSet)
-
-            //для каждого тикета запрашиваем инфо о котировках
-            stockSet.forEach { stock ->
-                viewModel.loadStockQuoteContent(stock.ticker)
-            }
         })
 
         viewModel.stockQuoteContent.observe(viewLifecycleOwner, { quote ->
@@ -96,7 +86,11 @@ class StockListFragment : ViewPagerFragment() {
         })
 
         viewModel.favouriteStockSet.observe(viewLifecycleOwner, { favouriteStocks ->
-            stockListAdapter.setFavouriteStock(favouriteStocks)
+            stockListAdapter.setFavouriteStockSet(favouriteStocks)
         })
+    }
+
+    companion object {
+        const val CACHING_DELAY = 200L
     }
 }

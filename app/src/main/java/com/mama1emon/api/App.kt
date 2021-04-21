@@ -1,8 +1,7 @@
 package com.mama1emon.api
 
 import android.app.Application
-import androidx.room.Room
-import com.mama1emon.api.data.AppDatabase
+import android.content.SharedPreferences
 import com.mama1emon.api.data.Repository
 import com.mama1emon.api.data.net.ApiMapper
 import com.mama1emon.api.domain.interactor.Interactor
@@ -17,7 +16,7 @@ import com.mama1emon.impl.domain.interactor.InteractorImpl
  * @author Andrey Khokhlov on 30.03.21
  */
 class App : Application() {
-    private var database: AppDatabase? = null
+    private var sharedPreferences: SharedPreferences? = null
     private var apiMapper: ApiMapper? = null
     private var repository: Repository? = null
     private var interactor: Interactor? = null
@@ -25,22 +24,30 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        database = Room.databaseBuilder(
-            this,
-            AppDatabase::class.java,
-            "InvestHubDB")
-            .build()
+        sharedPreferences = applicationContext.getSharedPreferences("InvestHubSP", MODE_PRIVATE)
         apiMapper = ApiMapperImpl(this.resources)
         repository = RepositoryImpl(apiMapper as ApiMapperImpl)
-        interactor = InteractorImpl(repository as RepositoryImpl, database!!)
+        interactor = InteractorImpl(repository as RepositoryImpl)
     }
 
-    fun getDatabase(): AppDatabase? = database
+    /**
+     * Получить [SharedPreferences]
+     */
+    fun getSharedPreferences(): SharedPreferences? = sharedPreferences
 
+    /**
+     * Получить [ApiMapper]
+     */
     fun getApiMapper(): ApiMapper? = apiMapper
 
+    /**
+     * Получить [Repository]
+     */
     fun getRepository(): Repository? = repository
 
+    /**
+     * Получить [Interactor]
+     */
     fun getInteractor(): Interactor? = interactor
 
     companion object {

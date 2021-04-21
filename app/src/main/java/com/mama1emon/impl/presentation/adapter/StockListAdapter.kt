@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mama1emon.R
-import com.mama1emon.impl.model.data.entity.FavouriteStock
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.model.domain.StockQuote
 import com.mama1emon.impl.presentation.viewholder.StockListViewHolder
@@ -16,7 +15,7 @@ import com.mama1emon.impl.presentation.viewholder.StockListViewHolder
  * @author Andrey Khokhlov on 24.03.21
  */
 class StockListAdapter(
-    private val favouriteStockCheckBoxListener: (View, String) -> Unit
+    private val favouriteStockCheckBoxListener: (View, Stock) -> Unit
 ) : RecyclerView.Adapter<StockListViewHolder>() {
 
     private var stockList = mutableListOf<Stock>()
@@ -44,7 +43,7 @@ class StockListAdapter(
      * @param stockSet множество акций
      */
     fun setData(stockSet: Set<Stock>) {
-        stockList = stockSet.toMutableList()
+        stockList = stockSet.toMutableList().apply { sortBy { it.ticker } }
         notifyDataSetChanged()
     }
 
@@ -63,9 +62,9 @@ class StockListAdapter(
     /**
      * Сеттит любимые акции
      *
-     * @param stockSet любимая акция
+     * @param stockSet любимые акции
      */
-    fun setFavouriteStock(stockSet: Set<FavouriteStock>) {
+    fun setFavouriteStockSet(stockSet: Set<Stock>) {
         val favouriteTickerSet = stockSet.map { it.ticker }
 
         stockList.forEach { stock ->
@@ -77,12 +76,12 @@ class StockListAdapter(
     /**
      * Удалить любимую акцию
      *
-     * @param stock любимая акция
+     * @param ticker любимая акция
      */
-    fun removeFavoriteStock(stock: FavouriteStock) {
-        stockList.find { it.ticker == stock.ticker }?.let { foundStock ->
-            stockList.removeAt(stockList.indexOf(foundStock))
-            notifyDataSetChanged()
+    fun removeFavoriteStock(ticker: String) {
+        stockList.find { it.ticker == ticker }?.let { foundStock ->
+            foundStock.isFavourite = false
+            notifyItemChanged(stockList.indexOf(foundStock))
         }
     }
 }

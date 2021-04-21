@@ -1,7 +1,7 @@
 package com.mama1emon.impl.model.converter
 
 import com.mama1emon.api.model.converter.Converter
-import com.mama1emon.impl.model.data.response.StockQuoteResponse
+import com.mama1emon.impl.model.data.StockQuoteResponse
 import com.mama1emon.impl.model.domain.StockQuote
 
 /**

@@ -11,7 +11,6 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.mama1emon.R
 import com.mama1emon.api.presentation.view.ViewPagerFragment
-import com.mama1emon.impl.model.data.entity.FavouriteStock
 import com.mama1emon.impl.presentation.adapter.StockListAdapter
 import com.mama1emon.impl.presentation.viewmodel.StockFragmentContentViewModel
 
@@ -50,20 +49,7 @@ class FavouriteStockListFragment : ViewPagerFragment() {
         if (viewModel.isChangeFavouriteStocks) {
             // кешируем с задержкой, чтобы не перегружать UI
             Handler(Looper.getMainLooper()).postDelayed({
-                val favouriteTickerSet = viewModel.cachedFavouriteStockSet.map { it.ticker }
-                viewModel.cachedStockSet?.let { stockSet ->
-                    val resultStockSet = stockSet.filter { stock ->
-                        stock.ticker in favouriteTickerSet
-                    }.toSet()
-
-                    stockListAdapter.setData(resultStockSet)
-
-                    resultStockSet.forEach { stock ->
-                        viewModel.loadStockQuoteContent(stock.ticker)
-                    }
-
-                    stockListAdapter.setFavouriteStock(viewModel.cachedFavouriteStockSet)
-                }
+                stockListAdapter.setData(viewModel.cachedFavouriteStockSet)
             }, CACHING_DELAY)
 
             viewModel.isChangeFavouriteStocks = false
@@ -71,19 +57,14 @@ class FavouriteStockListFragment : ViewPagerFragment() {
     }
 
     private fun setupRecyclerView() {
-        stockListAdapter = StockListAdapter { checkBox, selectedTicker ->
+        stockListAdapter = StockListAdapter { checkBox, selectedStock ->
             val favouriteStockCheckBox = checkBox as CheckBox
-            val favouriteStock = FavouriteStock(ticker = selectedTicker)
 
             if (favouriteStockCheckBox.isChecked) {
-                viewModel.saveFavouriteStock(favouriteStock)
-                viewModel.cachedFavouriteStockSet.add(favouriteStock)
+                viewModel.saveFavouriteStock(selectedStock)
             } else {
-                viewModel.deleteFavouriteStock(selectedTicker)
-                stockListAdapter.removeFavoriteStock(FavouriteStock(ticker = selectedTicker))
-                viewModel.cachedFavouriteStockSet.removeIf { cachedStock ->
-                    cachedStock.ticker == selectedTicker
-                }
+                viewModel.deleteFavouriteStock(selectedStock.ticker)
+                stockListAdapter.removeFavoriteStock(selectedStock.ticker)
             }
         }
 
@@ -96,21 +77,12 @@ class FavouriteStockListFragment : ViewPagerFragment() {
     }
 
     private fun observeData() {
-        viewModel.stockSetContent.observe(viewLifecycleOwner, { stockSet ->
-            viewModel.favouriteStockSet.observe(viewLifecycleOwner, { favouriteStocks ->
-                val favouriteTickerSet = favouriteStocks.map { it.ticker }
-                val resultStockSet = stockSet.filter { stock ->
-                    stock.ticker in favouriteTickerSet
-                }.toSet()
+        viewModel.favouriteStockSet.observe(viewLifecycleOwner, { favouriteStockSet ->
+            stockListAdapter.setData(favouriteStockSet)
+        })
 
-                stockListAdapter.setData(resultStockSet)
-
-                resultStockSet.forEach { stock ->
-                    viewModel.loadStockQuoteContent(stock.ticker)
-                }
-
-                stockListAdapter.setFavouriteStock(favouriteStocks)
-            })
+        viewModel.stockQuoteContent.observe(viewLifecycleOwner, { quote ->
+            stockListAdapter.setStockQuote(quote)
         })
     }
 

@@ -6,12 +6,14 @@ import com.mama1emon.api.data.Repository
 import com.mama1emon.api.data.net.ApiMapper
 import com.mama1emon.impl.model.converter.StockListContentConverter
 import com.mama1emon.impl.model.converter.StockQuoteContentConverter
-import com.mama1emon.impl.model.data.response.StockQuoteResponse
-import com.mama1emon.impl.model.data.response.StockSetResponse
+import com.mama1emon.impl.model.data.StockQuoteResponse
+import com.mama1emon.impl.model.data.StockSetResponse
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.model.domain.StockQuote
 import com.squareup.okhttp.Response
+import io.reactivex.Observable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 
 /**
  * Реализация интерфейса репозитория приложения
@@ -38,18 +40,20 @@ class RepositoryImpl(private val apiMapper: ApiMapper) : Repository {
         }
     }
 
-    override fun getStockQuote(ticker: String): Single<StockQuote> {
-        return Single.fromCallable {
-            val response = apiMapper.requestStockQuote(ticker)
-            unpackResponse(
-                response,
-                objectMapper.readValue(response.body().string(), StockQuoteResponse::class.java)
-            ) {
-                stockQuoteContentConverter.convert(it.apply {
-                    this.ticker = ticker
-                })
+    override fun getStockQuote(ticker: String): Observable<StockQuote> {
+        return Observable
+            .interval(INTERVAL_BETWEEN_CALL_IN_SECONDS, TimeUnit.SECONDS)
+            .map {
+                val response = apiMapper.requestStockQuote(ticker)
+                unpackResponse(
+                    response,
+                    objectMapper.readValue(response.body().string(), StockQuoteResponse::class.java)
+                ) {
+                    stockQuoteContentConverter.convert(it.apply {
+                        this.ticker = ticker
+                    })
+                }
             }
-        }
     }
 
     private fun <T, R> unpackResponse(response: Response, responseBody: T, converter: (T) -> R): R {
@@ -59,5 +63,9 @@ class RepositoryImpl(private val apiMapper: ApiMapper) : Repository {
             Log.i("unpackResponse()", "Can't unpack response")
             throw Exception()
         }
+    }
+
+    companion object {
+        const val INTERVAL_BETWEEN_CALL_IN_SECONDS = 5L
     }
 }

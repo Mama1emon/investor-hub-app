@@ -1,4 +1,4 @@
-package com.mama1emon.impl.model.data.response
+package com.mama1emon.impl.model.data
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties

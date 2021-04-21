@@ -2,6 +2,7 @@ package com.mama1emon.api.data
 
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.model.domain.StockQuote
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -17,7 +18,10 @@ interface Repository {
     fun getStockSetContent(): Single<Set<Stock>>
 
     /**
-     * Получить котировки акции
+     * Получить котировки акции. Запрос повторяется с определенным
+     * интервалом
+     *
+     * @param ticker акции
      */
-    fun getStockQuote(ticker: String): Single<StockQuote>
+    fun getStockQuote(ticker: String): Observable<StockQuote>
 }
