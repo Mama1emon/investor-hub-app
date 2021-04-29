@@ -74,14 +74,26 @@ class StockListAdapter(
     }
 
     /**
-     * Удалить любимую акцию
+     * Изменяет статус акции с любимой на не любимую
      *
-     * @param ticker любимая акция
+     * @param ticker любимой акции
      */
-    fun removeFavoriteStock(ticker: String) {
+    fun changeStockStatusToUnfavourite(ticker: String) {
         stockList.find { it.ticker == ticker }?.let { foundStock ->
             foundStock.isFavourite = false
-            notifyItemChanged(stockList.indexOf(foundStock))
+        }
+    }
+
+    /**
+     * Удалить любимую акцию из списка
+     *
+     * @param ticker любимой акции
+     */
+    fun removeFavouriteStock(ticker: String){
+        stockList.find { it.ticker == ticker }?.let { foundStock ->
+            foundStock.isFavourite = false
+            stockList.remove(foundStock)
+            notifyDataSetChanged()
         }
     }
 }

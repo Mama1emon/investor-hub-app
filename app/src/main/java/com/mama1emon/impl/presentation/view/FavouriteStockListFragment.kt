@@ -64,7 +64,7 @@ class FavouriteStockListFragment : ViewPagerFragment() {
                 viewModel.saveFavouriteStock(selectedStock)
             } else {
                 viewModel.deleteFavouriteStock(selectedStock.ticker)
-                stockListAdapter.removeFavoriteStock(selectedStock.ticker)
+                stockListAdapter.removeFavouriteStock(selectedStock.ticker)
             }
         }
 
