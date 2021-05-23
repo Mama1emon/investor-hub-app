@@ -16,6 +16,7 @@
     <dimen name="margin_xmedium">12dp</dimen>
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="margin_large_small">20dp</dimen>
+    <dimen name="margin_xxxlarge">48dp</dimen>
 
     <!-- Elevations -->
     <dimen name="no_elevation">0dp</dimen>

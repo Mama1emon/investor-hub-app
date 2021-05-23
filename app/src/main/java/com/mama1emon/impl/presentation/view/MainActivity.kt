@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener
 import com.google.android.material.tabs.TabLayout
 import com.mama1emon.R
 import com.mama1emon.api.App
@@ -17,6 +19,7 @@ import com.mama1emon.impl.presentation.adapter.PrimaryMenuPagerAdapter
 import com.mama1emon.impl.presentation.viewmodel.StockFragmentContentViewModel
 import com.mama1emon.impl.presentation.viewmodel.ViewModelProviderFactory
 import com.mama1emon.impl.util.*
+import kotlin.math.abs
 
 /**
  * Главный activity
@@ -28,9 +31,10 @@ class MainActivity : AppCompatActivity() {
     private val sharedPreferences = App.instance?.getSharedPreferences()
     private lateinit var viewModel: StockFragmentContentViewModel
 
+    private lateinit var appBarLayout: AppBarLayout
     private lateinit var viewPager: ViewPager
     private lateinit var tabLayout: TabLayout
-    private lateinit var searchEditView: TextView
+    private lateinit var searchLineField: SearchLineField
 
     private lateinit var viewPagerAdapter: PrimaryMenuPagerAdapter
     private lateinit var fragmentPagerMap: MutableMap<String, ViewPagerFragment>
@@ -46,11 +50,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViews()
-        setupHeader()
         initFragmentPagerMap()
 
         setupViewPager()
         setupTabLayout()
+
+        appBarLayout.addOnOffsetChangedListener(
+            OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                if (verticalOffset == 0){
+                    appBarLayout.elevation = 0f
+                } else if (abs(verticalOffset) < appBarLayout.totalScrollRange) {
+                    appBarLayout.elevation = 5f
+                }
+            }
+        )
 
         viewPager.addOnPageChangeListener(object : OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {}
@@ -68,7 +81,7 @@ class MainActivity : AppCompatActivity() {
                 for (i in 0 until tabLayout.tabCount) {
                     (tabLayout.getTabAt(i)?.customView as TextView).apply {
                         setTextAppearance(R.style.TextAppearance_Headline2)
-                        setTypefaceByFont(Font.Montserrat700)
+                        setFont(Font.Montserrat700)
                     }
                 }
                 setStyleCurrentFragmentTitle()
@@ -86,21 +99,11 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun findViews() = with(this) {
+    private fun findViews() {
+        appBarLayout = findViewById(R.id.app_bar)
         viewPager = findViewById(R.id.view_pager)
         tabLayout = findViewById(R.id.tabs)
-        searchEditView = findViewById(R.id.search_edit_view)
-    }
-
-    private fun setupHeader() {
-        searchEditView.setTypefaceByFont(Font.Montserrat600)
-        searchEditView.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                searchEditView.hint = ""
-            } else {
-                searchEditView.hint = resources.getString(R.string.find_company_or_ticker)
-            }
-        }
+        searchLineField = findViewById(R.id.search_view)
     }
 
     private fun initFragmentPagerMap() {
@@ -135,7 +138,7 @@ class MainActivity : AppCompatActivity() {
 
             getTabAt(counter)?.customView = (view as TextView).apply {
                 text = fragmentTitle
-                setTypefaceByFont(Font.Montserrat700)
+                setFont(Font.Montserrat700)
             }
 
             counter++
@@ -147,7 +150,7 @@ class MainActivity : AppCompatActivity() {
     private fun setStyleCurrentFragmentTitle() = with(tabLayout) {
         (getTabAt(selectedTabPosition)?.customView as TextView).apply {
             setTextAppearance(R.style.TextAppearance_Headline1)
-            setTypefaceByFont(Font.Montserrat700)
+            setFont(Font.Montserrat700)
         }
     }
 }

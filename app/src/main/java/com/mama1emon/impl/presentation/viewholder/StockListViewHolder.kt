@@ -13,7 +13,7 @@ import com.mama1emon.R
 import com.mama1emon.impl.model.domain.Stock
 import com.mama1emon.impl.util.Font
 import com.mama1emon.impl.util.IconManager
-import com.mama1emon.impl.util.setTypefaceByFont
+import com.mama1emon.impl.util.setFont
 import java.text.DecimalFormat
 
 /**
@@ -55,7 +55,7 @@ class StockListViewHolder(
      * @param stock данные об акции
      */
     fun bind(stock: Stock, favouriteStockCheckBoxClickListener: (View, Stock) -> Unit) {
-        setTypeface()
+        setFont()
         stockIcon.setImageDrawable(
             ResourcesCompat.getDrawable(
                 itemView.resources,
@@ -100,11 +100,11 @@ class StockListViewHolder(
     /**
      * Изменяет шрифт вью
      */
-    private fun setTypeface() {
-        stockNameTextView.setTypefaceByFont(Font.Montserrat700)
-        companyNameTextView.setTypefaceByFont(Font.Montserrat600)
-        currentPriceTextView.setTypefaceByFont(Font.Montserrat700)
-        dayDeltaTextView.setTypefaceByFont(Font.Montserrat600)
+    private fun setFont() {
+        stockNameTextView.setFont(Font.Montserrat700)
+        companyNameTextView.setFont(Font.Montserrat600)
+        currentPriceTextView.setFont(Font.Montserrat700)
+        dayDeltaTextView.setFont(Font.Montserrat600)
     }
 
     /**

@@ -24,11 +24,11 @@ fun View.setWidth(width: Int) {
 }
 
 /**
- * Получить шрифт
+ * Установить шрифт
  *
  * @param font шрифт
  */
-fun TextView.setTypefaceByFont(font: Font) {
+fun TextView.setFont(font: Font) {
     this.typeface = Typeface.createFromAsset(this.context.assets, font.path)
 }
 

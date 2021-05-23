@@ -14,6 +14,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="?attr/actionBarTheme"
@@ -24,19 +25,11 @@
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|snap|exitUntilCollapsed">
 
-            <EditText
-                android:id="@+id/search_edit_view"
+            <com.mama1emon.impl.presentation.view.SearchLineField
+                android:id="@+id/search_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_medium"
-                android:layout_marginTop="@dimen/margin_large_small"
-                android:layout_marginEnd="@dimen/margin_medium"
-                android:layout_marginBottom="@dimen/margin_xxsmall"
-                android:background="@drawable/search_line_background"
-                android:drawableStart="@drawable/ic_search_24"
-                android:drawablePadding="@dimen/padding_small"
-                android:hint="@string/find_company_or_ticker"
-                style="@style/Base.Widget.AppCompat.EditText.SearchLine"/>
+                android:layout_marginTop="@dimen/margin_medium" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 

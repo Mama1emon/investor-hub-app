@@ -7,4 +7,5 @@
     android:paddingStart="@dimen/padding_medium"
     android:paddingTop="@dimen/padding_small"
     android:paddingEnd="@dimen/padding_medium"
+    android:clipToPadding="false"
     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
