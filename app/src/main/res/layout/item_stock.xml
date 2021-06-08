@@ -29,7 +29,8 @@
             <ImageView
                 android:id="@+id/stock_icon"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"/>
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

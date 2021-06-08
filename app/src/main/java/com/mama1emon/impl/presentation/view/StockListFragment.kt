@@ -29,7 +29,7 @@ class StockListFragment : ViewPagerFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.stock_list_fragment, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_stock_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

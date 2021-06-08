@@ -21,7 +21,7 @@ class StockListAdapter(
     private var stockList = mutableListOf<Stock>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockListViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.stock_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_stock, parent, false)
         return StockListViewHolder(view)
     }
 
